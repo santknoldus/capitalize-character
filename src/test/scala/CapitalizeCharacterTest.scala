@@ -1,21 +1,23 @@
 package com.knoldus.operationonlist
 
 import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.TryValues._
 
 class CapitalizeCharacterTest extends AnyFunSuite {
 
-  test("list with only one string") {
-    val list = List("Sant")
-    assert(CapitalizeCharacter.capitalizeCharacter(list) === List("SAnt"))
+  test("capitalizeCharacter should return a list of strings with all 'a's capitalized") {
+    val input = List("My", "name", "is", "Michael", "Scott")
+    val expected = List("My", "nAme","is","MichAel", "Scott")
+    assert(CapitalizeCharacter.capitalizeCharacter(input).success.value === expected)
   }
 
-  test("list with multiple strings") {
-    val list = List("My", "name", "is", "Michael", "Scott")
-    assert(CapitalizeCharacter.capitalizeCharacter(list) === List("My", "nAme", "is", "MichAel", "Scott"))
+  test("capitalizeCharacter should return a Failure when given an empty list") {
+    val input = List.empty[String]
+    assert(CapitalizeCharacter.capitalizeCharacter(input).isFailure)
   }
 
-  test("list with no string") {
-    val list = List()
-    assertThrows[IllegalStateException](CapitalizeCharacter.capitalizeCharacter(list))
+  test("capitalizeCharacter should return a Failure when given a list with a null element") {
+    val input = List("My", null, "name")
+    assert(CapitalizeCharacter.capitalizeCharacter(input).isFailure)
   }
 }
